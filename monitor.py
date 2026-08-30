@@ -41,8 +41,8 @@ def merge_results(easy_results, rep_results):
 def run_check():
 
     try:
-        test_batch = "5000-1234-UK,50000-1234-UK,500-9999-UK,500-1234-ES"
-        expected = ["OK", "SUSPICIOUS", "SUSPICIOUS", "SUSPICIOUS"]  # known expected outcomes
+        test_batch = "5000-1234-UK,50000-1234-UK,500-9999-UK,500-1234-ES,5000-5555-UK"
+        expected = ["OK", "SUSPICIOUS", "SUSPICIOUS", "SUSPICIOUS", "SUSPICIOUS"]  # known expected outcomes
 
         start = time.time()
         screening = call_via_proxy("screen", "screening", {"items": test_batch})
@@ -71,6 +71,8 @@ def periodic_loop():
         result = run_check()
         if not result["passed"]:
             print(f"[ALERT] Monitor check FAILED: {result}", flush=True)
+        else:
+            print(f"[INFO] Monitor check passed: {result}", flush=True)
         time.sleep(60) 
 
 threading.Thread(target=periodic_loop, daemon=True).start()
